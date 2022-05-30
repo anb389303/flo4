@@ -1,3 +1,50 @@
+var secondsLeft = GAME_TIME;
+      var timeLeftText;
+      var timeLeftTimer;
+
+      var gameOver = false;
+      var coinsSent = false;
+
+ var score = 0;
+      var scoreText;
+
+
+
+timeLeftTimer = this.time.addEvent({
+          delay: 1000,
+          callback: updateTimeLeft,
+          callbackScope: this,
+          repeat: -1
+        });
+
+
+timeLeftTimer = this.time.addEvent({
+          delay: 1000,
+          callback: updateTimeLeft,
+          callbackScope: this,
+          repeat: -1
+        });
+
+
+        // add scoreText and timeLeftText to screen
+        scoreText = this.add.text(16, 16,  // position
+                                  "Bitcoin Bag = 0", // text
+                                  {
+                                    fontSize: "32px",
+                                    fill: "#000" //black -> google "hex color picker"
+                                  }
+        );
+        timeLeftText = this.add.text(16, 56,  // position
+                                  secondsLeft + " seconds left", // text
+                                  {
+                                    fontSize: "32px",
+                                    fill: "#f00" //red
+                                  }
+        );
+      }
+
+
+
 
 EnemyTank = function (index, game, player, bullets) {
 
@@ -205,6 +252,36 @@ function removeLogo () {
 }
 
 function update () {
+    
+    
+    if(gameOver){
+          if(!coinsSent){
+/*
+            // get address from User Input
+            var address = prompt("Please enter your ETH address", "");
+            if(address == null || address == ""){
+              alert("User cancelled the prompt");
+            }
+            else{
+              mintAfterGame(address, score);
+            }
+*/
+            //get address from Metamask
+            mintAfterGame(score);
+
+            coinsSent = true;
+          }
+          return;
+        };
+
+        secondsLeft --;
+        timeLeftText.setText(secondsLeft + " seconds left");
+
+        if (secondsLeft <=0) {
+          this.physics.pause(); //stopps all physics in the game
+          gameOver = true;
+        }
+      }    
 
     game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
 
@@ -309,6 +386,6 @@ function render () {
 
     // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
     game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
-
+    const GAME_TIME = 60;
 }
 
