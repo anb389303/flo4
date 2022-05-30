@@ -1,5 +1,5 @@
 
-EnemyTank = function (index, game, player, bullets) {
+EnemyTank = function (game, player, bullets) {
 
     var x = game.world.randomX;
     var y = game.world.randomY;
@@ -77,7 +77,7 @@ EnemyTank.prototype.update = function() {
 
 };
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(config);
 
 function preload () {
 
